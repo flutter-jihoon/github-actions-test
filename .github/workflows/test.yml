@@ -1,39 +1,70 @@
-name: A-B Conditional Test
+name: A, B 선택 실행 + C 제어 + 최종 결과 보고
 
 on:
   workflow_dispatch:
     inputs:
-      runJobs:
-        description: "실행할 Job 선택"
+      which_jobs:
+        description: 어떤 Job을 실행할까요?
         required: true
-        default: "both"
+        default: both
         type: choice
         options:
           - a
           - b
           - both
+      c_success:
+        description: Job C를 성공으로 처리할까요?
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
 
 jobs:
   job_a:
-    if: ${{ inputs.runJobs == 'a' || inputs.runJobs == 'both' }}
-    name: ✅ Job A (Success)
+    name: 🔵 Job A
+    if: ${{ inputs.which_jobs == 'a' || inputs.which_jobs == 'both' }}
     runs-on: ubuntu-latest
+    outputs:
+      result: success
     steps:
-      - run: echo "Job A succeeded"
+      - run: echo "Running Job A"
 
   job_b:
-    if: ${{ inputs.runJobs == 'b' || inputs.runJobs == 'both' }}
-    name: ❌ Job B (Fails intentionally)
+    name: 🟢 Job B
+    if: ${{ inputs.which_jobs == 'b' || inputs.which_jobs == 'both' }}
     runs-on: ubuntu-latest
+    outputs:
+      result: success
     steps:
-      - run: |
-          echo "Job B will fail"
-          exit 1
+      - run: echo "Running Job B"
 
-  final_job:
-    name: 🧪 Final Job (Runs if Job A was successful)
-    needs: [job_a, job_b]
-    if: ${{ always() && (inputs.runJobs == 'a' || inputs.runJobs == 'both') && needs.job_a.result == 'success' }}
+  job_c:
+    name: 🟡 Job C (성공/실패 제어)
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.set_result.outputs.c_result }}
+    steps:
+      - id: set_result
+        run: |
+          echo "Job C 실행 중..."
+          if [[ "${{ inputs.c_success }}" == "false" ]]; then
+            echo "c_result=failure" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "c_result=success" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+  final_report:
+    name: 🧾 최종 보고
+    needs: [job_a, job_b, job_c]
+    if: ${{ needs.job_c.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Final job ran because Job A succeeded"
+      - name: 결과 출력
+        run: |
+          echo "✅ Job A: ${{ needs.job_a.result || 'skipped' }}"
+          echo "✅ Job B: ${{ needs.job_b.result || 'skipped' }}"
+          echo "✅ Job C: ${{ needs.job_c.result }}"
