@@ -68,3 +68,7 @@ jobs:
           echo "✅ Job A: ${{ needs.job_a.result || 'skipped' }}"
           echo "✅ Job B: ${{ needs.job_b.result || 'skipped' }}"
           echo "✅ Job C: ${{ needs.job_c.result }}"
+
+      - name: 릴리즈
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
