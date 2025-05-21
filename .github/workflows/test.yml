@@ -1,33 +1,39 @@
-name: Needs & Conditional Test
+name: A-B Conditional Test
 
 on:
   workflow_dispatch:
+    inputs:
+      runJobs:
+        description: "실행할 Job 선택"
+        required: true
+        default: "both"
+        type: choice
+        options:
+          - a
+          - b
+          - both
 
 jobs:
   job_a:
+    if: ${{ inputs.runJobs == 'a' || inputs.runJobs == 'both' }}
     name: ✅ Job A (Success)
     runs-on: ubuntu-latest
     steps:
       - run: echo "Job A succeeded"
 
   job_b:
-    name: ❌ Job B (Fails)
+    if: ${{ inputs.runJobs == 'b' || inputs.runJobs == 'both' }}
+    name: ❌ Job B (Fails intentionally)
     runs-on: ubuntu-latest
     steps:
       - run: |
           echo "Job B will fail"
           exit 1
 
-  job_c:
-    name: ✅ Job C (Success - 조건 기준)
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Job C succeeded"
-
   final_job:
-    name: 🧪 Final Job (Only if Job C is success)
-    needs: [job_a, job_b, job_c]
-    if: ${{ needs.job_c.result == 'success' }}
+    name: 🧪 Final Job (Runs if Job A was successful)
+    needs: [job_a, job_b]
+    if: ${{ always() && (inputs.runJobs == 'a' || inputs.runJobs == 'both') && needs.job_a.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Final job ran because job_c succeeded"
+      - run: echo "Final job ran because Job A succeeded"
