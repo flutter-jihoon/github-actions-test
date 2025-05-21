@@ -60,7 +60,7 @@ jobs:
   final_report:
     name: 🧾 최종 보고
     needs: [job_a, job_b, job_c]
-    if: ${{ needs.job_c.result == 'success' }}
+    if: ${{ always() && needs.job_c.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: 결과 출력
