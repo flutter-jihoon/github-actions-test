@@ -1,0 +1,33 @@
+name: Needs & Conditional Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  job_a:
+    name: ✅ Job A (Success)
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job A succeeded"
+
+  job_b:
+    name: ❌ Job B (Fails)
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Job B will fail"
+          exit 1
+
+  job_c:
+    name: ✅ Job C (Success - 조건 기준)
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Job C succeeded"
+
+  final_job:
+    name: 🧪 Final Job (Only if Job C is success)
+    needs: [job_a, job_b, job_c]
+    if: ${{ always() && needs.job_c.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Final job ran because job_c succeeded"
