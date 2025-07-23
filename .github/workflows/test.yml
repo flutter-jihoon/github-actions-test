@@ -19,8 +19,8 @@ jobs:
       - name: Flutter 다운로드
         uses: subosito/flutter-action@v2
         with:
-          flutter-version-file: everychallenge_module/pubspec.yaml
           channel: 'stable'
+          flutter-version: 3.24.5
           cache: true
           cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
           cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
