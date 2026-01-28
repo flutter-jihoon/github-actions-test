@@ -3,13 +3,13 @@
 set -e
 
 # gh CLI 체크
-if ! command -v gh &> /dev/null; then
+if ! command -v gh > /dev/null; then
     echo "❌ gh CLI가 설치되어 있지 않습니다." >&2
     echo "   macOS: brew install gh" >&2
     exit 1
 fi
 
-if ! gh auth status &> /dev/null; then
+if ! gh auth status > /dev/null; then
     echo "❌ gh CLI 로그인이 필요합니다: gh auth login" >&2
     exit 1
 fi
