@@ -10,6 +10,6 @@ jobs:
     steps:
       - name: 체크아웃
         uses: actions/checkout@v4
-      - run: gh pr list --repo cashwalk/Add-To-App-Flutter
+      - run: gh repo view cashwalk/Add-To-App-Flutter
         env:
           GH_TOKEN: ${{ secrets.PAT }}
