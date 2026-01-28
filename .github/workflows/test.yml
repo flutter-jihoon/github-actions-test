@@ -17,6 +17,8 @@ jobs:
             echo "  macOS: brew install gh" >&2
             exit 1
           fi
-      - run: sh test.sh
+      - run: |
+          chmod +x ./test.sh
+          ./test.sh cw.latest
         env:
           GH_TOKEN: ${{ secrets.PAT }}
