@@ -10,6 +10,12 @@ jobs:
     steps:
       - name: 체크아웃
         uses: actions/checkout@v4
+      - name: gh CLI 인증 확인
+        run: |
+          if ! gh auth status &> /dev/null; then
+            echo "❌ gh CLI 인증에 실패했습니다." >&2
+            exit 1
+          fi
       - run: sh test.sh
         env:
           GH_TOKEN: ${{ secrets.PAT }}
