@@ -12,8 +12,9 @@ jobs:
         uses: actions/checkout@v4
       - name: gh CLI 인증 확인
         run: |
-          if ! gh auth status &> /dev/null; then
-            echo "❌ gh CLI 인증에 실패했습니다." >&2
+          if ! command -v gh &> /dev/null; then
+            echo "❌ gh CLI가 설치되어 있지 않습니다." >&2
+            echo "  macOS: brew install gh" >&2
             exit 1
           fi
       - run: sh test.sh
