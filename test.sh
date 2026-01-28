@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -e
 
 # gh CLI 체크
