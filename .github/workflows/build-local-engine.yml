@@ -16,6 +16,6 @@ jobs:
           echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
       - name: MacOS용 의존성 설치
         if: runner.os == 'macOS'
-        run: brew install curl unzip pkg-config
+        run: brew install unzip
       - name: 로컬 엔진 빌드
         run: sh build-local-engine.sh 3.38.9 stable diff.patch
