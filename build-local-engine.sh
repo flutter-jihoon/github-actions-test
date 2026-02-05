@@ -86,7 +86,8 @@ if [[ -n "$PATCH_FILE" && -f "$PATCH_FILE" ]]; then
 fi
 
 # engine/scripts/ 경로에 있는 standard.gclient 파일을 루트 경로의 .gclient 파일로 복사합니다.
-cp ${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/scripts/standard.gclient ${FLUTTER_RUNNER_TOOL_CACHE}/flutter/.gclient
+cd ${FLUTTER_RUNNER_TOOL_CACHE}/flutter
+cp engine/scripts/standard.gclient .gclient
 gclient sync -D
 
 # et를 사용하기 위해 engine/src/flutter/bin 경로를 PATH에 추가합니다.
