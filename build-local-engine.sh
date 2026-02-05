@@ -94,6 +94,9 @@ gclient sync -D
 ENGINE_BIN="${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/src/flutter/bin"
 export PATH="$ENGINE_BIN:$PATH"
 
+# et 내부 ninja 빌드 진행 상태를 표시하지 않습니다.
+export NINJA_STATUS=""
+
 # 로컬 엔진을 빌드합니다.
 echo "로컬 엔진 빌드를 시작합니다..."
 echo "현재 아키텍처: ${ARCH}"
