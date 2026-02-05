@@ -113,7 +113,7 @@ fi
 
 # Host Release 엔진 빌드
 echo "Host Release 엔진을 빌드합니다..."
-et build --config ${HOST_RELEASE} -j ${JOBS} //flutter/...
+et build --config ${HOST_RELEASE} -j ${JOBS}
 if [ $? -ne 0 ]; then
     echo "Host Release 엔진 빌드 실패"
     exit 1
@@ -122,7 +122,7 @@ echo "Host Release 엔진 빌드 완료"
 
 # Android Release 엔진 빌드
 echo "Android Release 엔진을 빌드합니다..."
-et build --config android_release_arm64 -j ${JOBS} //flutter/...
+et build --config android_release_arm64 -j ${JOBS}
 if [ $? -ne 0 ]; then
     echo "Android Release 엔진 빌드 실패"
     exit 1
@@ -132,7 +132,7 @@ echo "Android Release 엔진 빌드 완료"
 # iOS Release 엔진 빌드
 if [[ $FLUTTER_OS == "macos" ]]; then
     echo "iOS Release 엔진을 빌드합니다..."
-    et build --config ios_release -j ${JOBS} //flutter/...
+    et build --config ios_release -j ${JOBS}
     if [ $? -ne 0 ]; then
         echo "iOS Release 엔진 빌드 실패"
         exit 1
