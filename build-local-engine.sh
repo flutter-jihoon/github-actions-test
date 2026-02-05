@@ -91,7 +91,8 @@ cp engine/scripts/standard.gclient .gclient
 gclient sync -D
 
 # et를 사용하기 위해 engine/src/flutter/bin 경로를 PATH에 추가합니다.
-echo "${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/src/flutter/bin" >> $GITHUB_PATH
+ENGINE_BIN="${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/src/flutter/bin"
+export PATH="$ENGINE_BIN:$PATH"
 
 # 로컬 엔진을 빌드합니다.
 echo "로컬 엔진 빌드를 시작합니다..."
@@ -102,10 +103,7 @@ JOBS=${JOBS:-8}
 cd "${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/src/flutter"
 
 # Runner 아키텍처에 따라 Host 엔진 결정
-# ARCH는 대문자일 수 있으므로 대소문자 무관하게 비교
-ARCH_LOWER=$(echo "${ARCH}" | awk '{print tolower($0)}')
-
-if [[ $ARCH_LOWER == "arm64" ]]; then
+if [[ $FLUTTER_OS == "arm64" ]]; then
     HOST_RELEASE="host_release_arm64"
     echo "ARM64 아키텍처 감지: ${HOST_RELEASE} 사용"
 else
