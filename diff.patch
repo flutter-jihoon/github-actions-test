@@ -1,0 +1,781 @@
+diff --git a/engine/src/flutter/shell/common/switch_defs.h b/engine/src/flutter/shell/common/switch_defs.h
+deleted file mode 100644
+index 5c4bf44839c..00000000000
+--- a/engine/src/flutter/shell/common/switch_defs.h
++++ /dev/null
+@@ -1,304 +0,0 @@
+-// Copyright 2013 The Flutter Authors. All rights reserved.
+-// Use of this source code is governed by a BSD-style license that can be
+-// found in the LICENSE file.
+-
+-#ifndef FLUTTER_SHELL_COMMON_SWITCH_DEFS_H_
+-#define FLUTTER_SHELL_COMMON_SWITCH_DEFS_H_
+-
+-namespace flutter {
+-
+-// clang-format off
+-#ifndef DEF_SWITCHES_START
+-#define DEF_SWITCHES_START enum class Switch {
+-#endif
+-#ifndef DEF_SWITCH
+-#define DEF_SWITCH(swtch, flag, help) swtch,
+-#endif
+-#ifndef DEF_SWITCHES_END
+-#define DEF_SWITCHES_END Sentinel, } ;
+-#endif
+-// clang-format on
+-
+-DEF_SWITCHES_START
+-DEF_SWITCH(AotSharedLibraryName,
+-           "aot-shared-library-name",
+-           "Name of the *.so containing AOT compiled Dart assets.")
+-DEF_SWITCH(AotVMServiceSharedLibraryName,
+-           "aot-vmservice-shared-library-name",
+-           "Name of the *.so containing AOT compiled Dart assets for "
+-           "launching the service isolate.")
+-DEF_SWITCH(SnapshotAssetPath,
+-           "snapshot-asset-path",
+-           "Path to the directory containing the four files specified by "
+-           "VmSnapshotData, VmSnapshotInstructions, "
+-           "VmSnapshotInstructions and IsolateSnapshotInstructions.")
+-DEF_SWITCH(VmSnapshotData,
+-           "vm-snapshot-data",
+-           "The VM snapshot data that will be memory mapped as read-only. "
+-           "SnapshotAssetPath must be present.")
+-DEF_SWITCH(VmSnapshotInstructions,
+-           "vm-snapshot-instr",
+-           "The VM instructions snapshot that will be memory mapped as read "
+-           "and executable. SnapshotAssetPath must be present.")
+-DEF_SWITCH(IsolateSnapshotData,
+-           "isolate-snapshot-data",
+-           "The isolate snapshot data that will be memory mapped as read-only. "
+-           "SnapshotAssetPath must be present.")
+-DEF_SWITCH(IsolateSnapshotInstructions,
+-           "isolate-snapshot-instr",
+-           "The isolate instructions snapshot that will be memory mapped as "
+-           "read and executable. SnapshotAssetPath must be present.")
+-DEF_SWITCH(CacheDirPath,
+-           "cache-dir-path",
+-           "Path to the cache directory. "
+-           "This is different from the persistent_cache_path in embedder.h, "
+-           "which is used for Skia shader cache.")
+-DEF_SWITCH(ICUDataFilePath, "icu-data-file-path", "Path to the ICU data file.")
+-DEF_SWITCH(ICUSymbolPrefix,
+-           "icu-symbol-prefix",
+-           "Prefix for the symbols representing ICU data linked into the "
+-           "Flutter library.")
+-DEF_SWITCH(ICUNativeLibPath,
+-           "icu-native-lib-path",
+-           "Path to the library file that exports the ICU data.")
+-DEF_SWITCH(DartFlags,
+-           "dart-flags",
+-           "Flags passed directly to the Dart VM without being interpreted "
+-           "by the Flutter shell.")
+-DEF_SWITCH(DeviceVMServiceHost,
+-           "vm-service-host",
+-           "The hostname/IP address on which the Dart VM Service should "
+-           "be served. If not set, defaults to 127.0.0.1 or ::1 depending on "
+-           "whether --ipv6 is specified.")
+-DEF_SWITCH(DeviceVMServicePort,
+-           "vm-service-port",
+-           "A custom Dart VM Service port. The default is to pick a randomly "
+-           "available open port.")
+-DEF_SWITCH(
+-    DisableVMService,
+-    "disable-vm-service",
+-    "Disable the Dart VM Service. The Dart VM Service is never available "
+-    "in release mode.")
+-DEF_SWITCH(DisableVMServicePublication,
+-           "disable-vm-service-publication",
+-           "Disable mDNS Dart VM Service publication.")
+-DEF_SWITCH(IPv6,
+-           "ipv6",
+-           "Bind to the IPv6 localhost address for the Dart VM Service. "
+-           "Ignored if --vm-service-host is set.")
+-DEF_SWITCH(EnableDartProfiling,
+-           "enable-dart-profiling",
+-           "Enable Dart profiling. Profiling information can be viewed from "
+-           "Dart / Flutter DevTools.")
+-DEF_SWITCH(
+-    ProfileStartup,
+-    "profile-startup",
+-    "Make the profiler discard new samples once the profiler sample buffer is "
+-    "full. When this flag is not set, the profiler sample buffer is used as a "
+-    "ring buffer, meaning that once it is full, new samples start overwriting "
+-    "the oldest ones. This switch is only meaningful when set in conjunction "
+-    "with --enable-dart-profiling.")
+-DEF_SWITCH(EndlessTraceBuffer,
+-           "endless-trace-buffer",
+-           "Enable an endless trace buffer. The default is a ring buffer. "
+-           "This is useful when very old events need to viewed. For example, "
+-           "during application launch. Memory usage will continue to grow "
+-           "indefinitely however.")
+-DEF_SWITCH(EnableSoftwareRendering,
+-           "enable-software-rendering",
+-           "Enable rendering using the Skia software backend. This is useful "
+-           "when testing Flutter on emulators. By default, Flutter will "
+-           "attempt to either use OpenGL, Metal, or Vulkan.")
+-DEF_SWITCH(Route,
+-           "route",
+-           "Start app with an specific route defined on the framework")
+-DEF_SWITCH(SkiaDeterministicRendering,
+-           "skia-deterministic-rendering",
+-           "Skips the call to SkGraphics::Init(), thus avoiding swapping out "
+-           "some Skia function pointers based on available CPU features. This "
+-           "is used to obtain 100% deterministic behavior in Skia rendering.")
+-DEF_SWITCH(FlutterAssetsDir,
+-           "flutter-assets-dir",
+-           "Path to the Flutter assets directory.")
+-DEF_SWITCH(Help, "help", "Display this help text.")
+-DEF_SWITCH(LogTag, "log-tag", "Tag associated with log messages.")
+-DEF_SWITCH(DisableServiceAuthCodes,
+-           "disable-service-auth-codes",
+-           "Disable the requirement for authentication codes for communicating"
+-           " with the VM service.")
+-DEF_SWITCH(EnableServicePortFallback,
+-           "enable-service-port-fallback",
+-           "Allow the VM service to fallback to automatic port selection if"
+-           " binding to a specified port fails.")
+-DEF_SWITCH(StartPaused,
+-           "start-paused",
+-           "Start the application paused in the Dart debugger.")
+-DEF_SWITCH(EnableCheckedMode, "enable-checked-mode", "Enable checked mode.")
+-DEF_SWITCH(TraceStartup,
+-           "trace-startup",
+-           "Trace early application lifecycle. Automatically switches to an "
+-           "endless trace buffer.")
+-DEF_SWITCH(TraceSkia,
+-           "trace-skia",
+-           "Trace Skia calls. This is useful when debugging the GPU threed."
+-           "By default, Skia tracing is not enabled to reduce the number of "
+-           "traced events")
+-DEF_SWITCH(TraceSkiaAllowlist,
+-           "trace-skia-allowlist",
+-           "Filters out all Skia trace event categories except those that are "
+-           "specified in this comma separated list.")
+-DEF_SWITCH(
+-    TraceAllowlist,
+-    "trace-allowlist",
+-    "Filters out all trace events except those that are specified in this "
+-    "comma separated list of allowed prefixes.")
+-DEF_SWITCH(DumpSkpOnShaderCompilation,
+-           "dump-skp-on-shader-compilation",
+-           "Automatically dump the skp that triggers new shader compilations. "
+-           "This is useful for writing custom ShaderWarmUp to reduce jank. "
+-           "By default, this is not enabled to reduce the overhead. ")
+-DEF_SWITCH(CacheSkSL,
+-           "cache-sksl",
+-           "Only cache the shader in SkSL instead of binary or GLSL. This "
+-           "should only be used during development phases. The generated SkSLs "
+-           "can later be used in the release build for shader precompilation "
+-           "at launch in order to eliminate the shader-compile jank.")
+-DEF_SWITCH(PurgePersistentCache,
+-           "purge-persistent-cache",
+-           "Remove all existing persistent cache. This is mainly for debugging "
+-           "purposes such as reproducing the shader compilation jank.")
+-DEF_SWITCH(
+-    TraceSystrace,
+-    "trace-systrace",
+-    "Trace to the system tracer (instead of the timeline) on platforms where "
+-    "such a tracer is available. Currently only supported on Android and "
+-    "Fuchsia.")
+-DEF_SWITCH(TraceToFile,
+-           "trace-to-file",
+-           "Write the timeline trace to a file at the specified path. The file "
+-           "will be in Perfetto's proto format; it will be possible to load "
+-           "the file into Perfetto's trace viewer.")
+-DEF_SWITCH(ProfileMicrotasks,
+-           "profile-microtasks",
+-           "Enable collection of information about each microtask. Information "
+-           "about completed microtasks will be written to the \"Microtask\" "
+-           "timeline stream. Information about queued microtasks will be "
+-           "accessible from Dart / Flutter DevTools.")
+-DEF_SWITCH(UseTestFonts,
+-           "use-test-fonts",
+-           "Running tests that layout and measure text will not yield "
+-           "consistent results across various platforms. Enabling this option "
+-           "will make font resolution default to the Ahem test font on all "
+-           "platforms (See https://www.w3.org/Style/CSS/Test/Fonts/Ahem/). "
+-           "This option is only available on the desktop test shells.")
+-DEF_SWITCH(DisableAssetFonts,
+-           "disable-asset-fonts",
+-           "Prevents usage of any non-test fonts unless they were explicitly "
+-           "Loaded via dart:ui font APIs. This option is only available on the "
+-           "desktop test shells.")
+-DEF_SWITCH(PrefetchedDefaultFontManager,
+-           "prefetched-default-font-manager",
+-           "Indicates whether the embedding started a prefetch of the "
+-           "default font manager before creating the engine.")
+-DEF_SWITCH(VerboseLogging,
+-           "verbose-logging",
+-           "By default, only errors are logged. This flag enabled logging at "
+-           "all severity levels. This is NOT a per shell flag and affect log "
+-           "levels for all shells in the process.")
+-DEF_SWITCH(RunForever,
+-           "run-forever",
+-           "In non-interactive mode, keep the shell running after the Dart "
+-           "script has completed.")
+-DEF_SWITCH(DisableDartAsserts,
+-           "disable-dart-asserts",
+-           "Dart code runs with assertions enabled when the runtime mode is "
+-           "debug. In profile and release product modes, assertions are "
+-           "disabled. This flag may be specified if the user wishes to run "
+-           "with assertions disabled in the debug product mode (i.e. with JIT "
+-           "or DBC).")
+-DEF_SWITCH(EnableSerialGC,
+-           "enable-serial-gc",
+-           "On low power devices with low core counts, running concurrent "
+-           "GC tasks on threads can cause them to contend with the UI thread "
+-           "which could potentially lead to jank. This option turns off all "
+-           "concurrent GC activities")
+-DEF_SWITCH(DisallowInsecureConnections,
+-           "disallow-insecure-connections",
+-           "By default, dart:io allows all socket connections. If this switch "
+-           "is set, all insecure connections are rejected.")
+-DEF_SWITCH(DomainNetworkPolicy,
+-           "domain-network-policy",
+-           "JSON encoded network policy per domain. This overrides the "
+-           "DisallowInsecureConnections switch. Embedder can specify whether "
+-           "to allow or disallow insecure connections at a domain level.")
+-DEF_SWITCH(
+-    ForceMultithreading,
+-    "force-multithreading",
+-    "Uses separate threads for the platform, UI, GPU and IO task runners. "
+-    "By default, a single thread is used for all task runners. Only available "
+-    "in the flutter_tester.")
+-DEF_SWITCH(OldGenHeapSize,
+-           "old-gen-heap-size",
+-           "The size limit in megabytes for the Dart VM old gen heap space.")
+-
+-DEF_SWITCH(ResourceCacheMaxBytesThreshold,
+-           "resource-cache-max-bytes-threshold",
+-           "The max bytes threshold of resource cache, or 0 for unlimited.")
+-DEF_SWITCH(EnableImpeller,
+-           "enable-impeller",
+-           "Enable the Impeller renderer on supported platforms. Ignored if "
+-           "Impeller is not supported on the platform.")
+-DEF_SWITCH(ImpellerBackend,
+-           "impeller-backend",
+-           "Requests a particular Impeller backend on platforms that support "
+-           "multiple backends. (ex `opengles` or `vulkan`)")
+-DEF_SWITCH(EnableVulkanValidation,
+-           "enable-vulkan-validation",
+-           "Enable loading Vulkan validation layers. The layers must be "
+-           "available to the application and loadable. On non-Vulkan backends, "
+-           "this flag does nothing.")
+-DEF_SWITCH(EnableOpenGLGPUTracing,
+-           "enable-opengl-gpu-tracing",
+-           "Enable tracing of GPU execution time when using the Impeller "
+-           "OpenGLES backend.")
+-DEF_SWITCH(EnableVulkanGPUTracing,
+-           "enable-vulkan-gpu-tracing",
+-           "Enable tracing of GPU execution time when using the Impeller "
+-           "Vulkan backend.")
+-DEF_SWITCH(LeakVM,
+-           "leak-vm",
+-           "When the last shell shuts down, the shared VM is leaked by default "
+-           "(the leak_vm in VM settings is true). To clean up the leak VM, set "
+-           "this value to false.")
+-DEF_SWITCH(EnableEmbedderAPI,
+-           "enable-embedder-api",
+-           "Enable the embedder api. Defaults to false. iOS only.")
+-DEF_SWITCH(EnablePlatformIsolates,
+-           "enable-platform-isolates",
+-           "Enable support for isolates that run on the platform thread.")
+-DEF_SWITCH(MergedPlatformUIThread,
+-           "merged-platform-ui-thread",
+-           "Sets whether the ui thread and platform thread should be merged.")
+-// This is a legacy flag that has been superseded by merged-platform-ui-thread.
+-// TODO(163064): remove this when users have been migrated.
+-DEF_SWITCH(DisableMergedPlatformUIThread,
+-           "no-enable-merged-platform-ui-thread",
+-           "Disables merging of the UI and platform threads.")
+-DEF_SWITCH(EnableAndroidSurfaceControl,
+-           "enable-surface-control",
+-           "Enable the SurfaceControl backed swapchain when supported.")
+-DEF_SWITCH(EnableFlutterGPU,
+-           "enable-flutter-gpu",
+-           "Whether Flutter GPU is enabled.")
+-DEF_SWITCH(ImpellerLazyShaderMode,
+-           "impeller-lazy-shader-mode",
+-           "Whether to defer initialization of all required PSOs for the "
+-           "Impeller backend. Defaults to false.")
+-DEF_SWITCH(ImpellerAntialiasLines,
+-           "impeller-antialias-lines",
+-           "Experimental flag to test drawing lines with antialiasing.")
+-DEF_SWITCHES_END
+-
+-}  // namespace flutter
+-
+-#endif  // FLUTTER_SHELL_COMMON_SWITCH_DEFS_H_
+diff --git a/engine/src/flutter/shell/common/switches.cc b/engine/src/flutter/shell/common/switches.cc
+index 15d43a5f3ae..56adf3109b8 100644
+--- a/engine/src/flutter/shell/common/switches.cc
++++ b/engine/src/flutter/shell/common/switches.cc
+@@ -13,10 +13,10 @@
+ #include "flutter/fml/paths.h"
+ #include "flutter/shell/version/version.h"
+ 
+-// This will include switch_defs.h once to get the default enum definition.
++// Include once for the default enum definition.
+ #include "flutter/shell/common/switches.h"
+ 
+-#undef FLUTTER_SHELL_COMMON_SWITCH_DEFS_H_
++#undef FLUTTER_SHELL_COMMON_SWITCHES_H_
+ 
+ struct SwitchDesc {
+   flutter::Switch sw;
+@@ -68,8 +68,8 @@ static const std::string kAllowedDartFlags[] = {
+ 
+ #endif  // FLUTTER_RELEASE
+ 
+-// Include switch_defs.h again for the struct definition.
+-#include "flutter/shell/common/switch_defs.h"
++// Include again for struct definition.
++#include "flutter/shell/common/switches.h"
+ 
+ // Define symbols for the ICU data that is linked into the Flutter library on
+ // Android.  This is a workaround for crashes seen when doing dynamic lookups
+@@ -227,8 +227,7 @@ std::unique_ptr<fml::Mapping> GetSymbolMapping(
+   return std::make_unique<fml::NonOwnedMapping>(mapping, size);
+ }
+ 
+-Settings SettingsFromCommandLine(const fml::CommandLine& command_line,
+-                                 bool require_merged_platform_ui_thread) {
++Settings SettingsFromCommandLine(const fml::CommandLine& command_line) {
+   Settings settings = {};
+ 
+   // Set executable name.
+@@ -517,15 +516,8 @@ Settings SettingsFromCommandLine(const fml::CommandLine& command_line,
+   settings.enable_surface_control = command_line.HasOption(
+       FlagForSwitch(Switch::EnableAndroidSurfaceControl));
+ 
+-  constexpr std::string_view kMergedThreadEnabled = "enabled";
+-  constexpr std::string_view kMergedThreadDisabled = "disabled";
+-  constexpr std::string_view kMergedThreadMergeAfterLaunch = "mergeAfterLaunch";
+   if (command_line.HasOption(
+           FlagForSwitch(Switch::DisableMergedPlatformUIThread))) {
+-    FML_CHECK(!require_merged_platform_ui_thread)
+-        << "This platform does not support the "
+-        << FlagForSwitch(Switch::DisableMergedPlatformUIThread) << " flag";
+-
+     settings.merged_platform_ui_thread =
+         Settings::MergedPlatformUIThread::kDisabled;
+   } else if (command_line.HasOption(
+@@ -533,18 +525,13 @@ Settings SettingsFromCommandLine(const fml::CommandLine& command_line,
+     std::string merged_platform_ui;
+     command_line.GetOptionValue(FlagForSwitch(Switch::MergedPlatformUIThread),
+                                 &merged_platform_ui);
+-    if (merged_platform_ui == kMergedThreadEnabled) {
++    if (merged_platform_ui == "enabled") {
+       settings.merged_platform_ui_thread =
+           Settings::MergedPlatformUIThread::kEnabled;
+-    } else if (merged_platform_ui == kMergedThreadDisabled) {
+-      FML_CHECK(!require_merged_platform_ui_thread)
+-          << "This platform does not support the "
+-          << FlagForSwitch(Switch::MergedPlatformUIThread) << "="
+-          << kMergedThreadDisabled << " flag";
+-
++    } else if (merged_platform_ui == "disabled") {
+       settings.merged_platform_ui_thread =
+           Settings::MergedPlatformUIThread::kDisabled;
+-    } else if (merged_platform_ui == kMergedThreadMergeAfterLaunch) {
++    } else if (merged_platform_ui == "mergeAfterLaunch") {
+       settings.merged_platform_ui_thread =
+           Settings::MergedPlatformUIThread::kMergeAfterLaunch;
+     }
+diff --git a/engine/src/flutter/shell/common/switches.h b/engine/src/flutter/shell/common/switches.h
+index 01e5010f67a..6269113b319 100644
+--- a/engine/src/flutter/shell/common/switches.h
++++ b/engine/src/flutter/shell/common/switches.h
+@@ -6,20 +6,309 @@
+ 
+ #include "flutter/common/settings.h"
+ #include "flutter/fml/command_line.h"
+-#include "flutter/shell/common/switch_defs.h"
+ 
+ #ifndef FLUTTER_SHELL_COMMON_SWITCHES_H_
+ #define FLUTTER_SHELL_COMMON_SWITCHES_H_
+ 
+ namespace flutter {
+ 
++// clang-format off
++#ifndef DEF_SWITCHES_START
++#define DEF_SWITCHES_START enum class Switch {
++#endif
++#ifndef DEF_SWITCH
++#define DEF_SWITCH(swtch, flag, help) swtch,
++#endif
++#ifndef DEF_SWITCHES_END
++#define DEF_SWITCHES_END Sentinel, } ;
++#endif
++// clang-format on
++
++DEF_SWITCHES_START
++DEF_SWITCH(AotSharedLibraryName,
++           "aot-shared-library-name",
++           "Name of the *.so containing AOT compiled Dart assets.")
++DEF_SWITCH(AotVMServiceSharedLibraryName,
++           "aot-vmservice-shared-library-name",
++           "Name of the *.so containing AOT compiled Dart assets for "
++           "launching the service isolate.")
++DEF_SWITCH(SnapshotAssetPath,
++           "snapshot-asset-path",
++           "Path to the directory containing the four files specified by "
++           "VmSnapshotData, VmSnapshotInstructions, "
++           "VmSnapshotInstructions and IsolateSnapshotInstructions.")
++DEF_SWITCH(VmSnapshotData,
++           "vm-snapshot-data",
++           "The VM snapshot data that will be memory mapped as read-only. "
++           "SnapshotAssetPath must be present.")
++DEF_SWITCH(VmSnapshotInstructions,
++           "vm-snapshot-instr",
++           "The VM instructions snapshot that will be memory mapped as read "
++           "and executable. SnapshotAssetPath must be present.")
++DEF_SWITCH(IsolateSnapshotData,
++           "isolate-snapshot-data",
++           "The isolate snapshot data that will be memory mapped as read-only. "
++           "SnapshotAssetPath must be present.")
++DEF_SWITCH(IsolateSnapshotInstructions,
++           "isolate-snapshot-instr",
++           "The isolate instructions snapshot that will be memory mapped as "
++           "read and executable. SnapshotAssetPath must be present.")
++DEF_SWITCH(CacheDirPath,
++           "cache-dir-path",
++           "Path to the cache directory. "
++           "This is different from the persistent_cache_path in embedder.h, "
++           "which is used for Skia shader cache.")
++DEF_SWITCH(ICUDataFilePath, "icu-data-file-path", "Path to the ICU data file.")
++DEF_SWITCH(ICUSymbolPrefix,
++           "icu-symbol-prefix",
++           "Prefix for the symbols representing ICU data linked into the "
++           "Flutter library.")
++DEF_SWITCH(ICUNativeLibPath,
++           "icu-native-lib-path",
++           "Path to the library file that exports the ICU data.")
++DEF_SWITCH(DartFlags,
++           "dart-flags",
++           "Flags passed directly to the Dart VM without being interpreted "
++           "by the Flutter shell.")
++DEF_SWITCH(DeviceVMServiceHost,
++           "vm-service-host",
++           "The hostname/IP address on which the Dart VM Service should "
++           "be served. If not set, defaults to 127.0.0.1 or ::1 depending on "
++           "whether --ipv6 is specified.")
++DEF_SWITCH(DeviceVMServicePort,
++           "vm-service-port",
++           "A custom Dart VM Service port. The default is to pick a randomly "
++           "available open port.")
++DEF_SWITCH(
++    DisableVMService,
++    "disable-vm-service",
++    "Disable the Dart VM Service. The Dart VM Service is never available "
++    "in release mode.")
++DEF_SWITCH(DisableVMServicePublication,
++           "disable-vm-service-publication",
++           "Disable mDNS Dart VM Service publication.")
++DEF_SWITCH(IPv6,
++           "ipv6",
++           "Bind to the IPv6 localhost address for the Dart VM Service. "
++           "Ignored if --vm-service-host is set.")
++DEF_SWITCH(EnableDartProfiling,
++           "enable-dart-profiling",
++           "Enable Dart profiling. Profiling information can be viewed from "
++           "Dart / Flutter DevTools.")
++DEF_SWITCH(
++    ProfileStartup,
++    "profile-startup",
++    "Make the profiler discard new samples once the profiler sample buffer is "
++    "full. When this flag is not set, the profiler sample buffer is used as a "
++    "ring buffer, meaning that once it is full, new samples start overwriting "
++    "the oldest ones. This switch is only meaningful when set in conjunction "
++    "with --enable-dart-profiling.")
++DEF_SWITCH(EndlessTraceBuffer,
++           "endless-trace-buffer",
++           "Enable an endless trace buffer. The default is a ring buffer. "
++           "This is useful when very old events need to viewed. For example, "
++           "during application launch. Memory usage will continue to grow "
++           "indefinitely however.")
++DEF_SWITCH(EnableSoftwareRendering,
++           "enable-software-rendering",
++           "Enable rendering using the Skia software backend. This is useful "
++           "when testing Flutter on emulators. By default, Flutter will "
++           "attempt to either use OpenGL, Metal, or Vulkan.")
++DEF_SWITCH(Route,
++           "route",
++           "Start app with an specific route defined on the framework")
++DEF_SWITCH(SkiaDeterministicRendering,
++           "skia-deterministic-rendering",
++           "Skips the call to SkGraphics::Init(), thus avoiding swapping out "
++           "some Skia function pointers based on available CPU features. This "
++           "is used to obtain 100% deterministic behavior in Skia rendering.")
++DEF_SWITCH(FlutterAssetsDir,
++           "flutter-assets-dir",
++           "Path to the Flutter assets directory.")
++DEF_SWITCH(Help, "help", "Display this help text.")
++DEF_SWITCH(LogTag, "log-tag", "Tag associated with log messages.")
++DEF_SWITCH(DisableServiceAuthCodes,
++           "disable-service-auth-codes",
++           "Disable the requirement for authentication codes for communicating"
++           " with the VM service.")
++DEF_SWITCH(EnableServicePortFallback,
++           "enable-service-port-fallback",
++           "Allow the VM service to fallback to automatic port selection if"
++           " binding to a specified port fails.")
++DEF_SWITCH(StartPaused,
++           "start-paused",
++           "Start the application paused in the Dart debugger.")
++DEF_SWITCH(EnableCheckedMode, "enable-checked-mode", "Enable checked mode.")
++DEF_SWITCH(TraceStartup,
++           "trace-startup",
++           "Trace early application lifecycle. Automatically switches to an "
++           "endless trace buffer.")
++DEF_SWITCH(TraceSkia,
++           "trace-skia",
++           "Trace Skia calls. This is useful when debugging the GPU threed."
++           "By default, Skia tracing is not enabled to reduce the number of "
++           "traced events")
++DEF_SWITCH(TraceSkiaAllowlist,
++           "trace-skia-allowlist",
++           "Filters out all Skia trace event categories except those that are "
++           "specified in this comma separated list.")
++DEF_SWITCH(
++    TraceAllowlist,
++    "trace-allowlist",
++    "Filters out all trace events except those that are specified in this "
++    "comma separated list of allowed prefixes.")
++DEF_SWITCH(DumpSkpOnShaderCompilation,
++           "dump-skp-on-shader-compilation",
++           "Automatically dump the skp that triggers new shader compilations. "
++           "This is useful for writing custom ShaderWarmUp to reduce jank. "
++           "By default, this is not enabled to reduce the overhead. ")
++DEF_SWITCH(CacheSkSL,
++           "cache-sksl",
++           "Only cache the shader in SkSL instead of binary or GLSL. This "
++           "should only be used during development phases. The generated SkSLs "
++           "can later be used in the release build for shader precompilation "
++           "at launch in order to eliminate the shader-compile jank.")
++DEF_SWITCH(PurgePersistentCache,
++           "purge-persistent-cache",
++           "Remove all existing persistent cache. This is mainly for debugging "
++           "purposes such as reproducing the shader compilation jank.")
++DEF_SWITCH(
++    TraceSystrace,
++    "trace-systrace",
++    "Trace to the system tracer (instead of the timeline) on platforms where "
++    "such a tracer is available. Currently only supported on Android and "
++    "Fuchsia.")
++DEF_SWITCH(TraceToFile,
++           "trace-to-file",
++           "Write the timeline trace to a file at the specified path. The file "
++           "will be in Perfetto's proto format; it will be possible to load "
++           "the file into Perfetto's trace viewer.")
++DEF_SWITCH(ProfileMicrotasks,
++           "profile-microtasks",
++           "Enable collection of information about each microtask. Information "
++           "about completed microtasks will be written to the \"Microtask\" "
++           "timeline stream. Information about queued microtasks will be "
++           "accessible from Dart / Flutter DevTools.")
++DEF_SWITCH(UseTestFonts,
++           "use-test-fonts",
++           "Running tests that layout and measure text will not yield "
++           "consistent results across various platforms. Enabling this option "
++           "will make font resolution default to the Ahem test font on all "
++           "platforms (See https://www.w3.org/Style/CSS/Test/Fonts/Ahem/). "
++           "This option is only available on the desktop test shells.")
++DEF_SWITCH(DisableAssetFonts,
++           "disable-asset-fonts",
++           "Prevents usage of any non-test fonts unless they were explicitly "
++           "Loaded via dart:ui font APIs. This option is only available on the "
++           "desktop test shells.")
++DEF_SWITCH(PrefetchedDefaultFontManager,
++           "prefetched-default-font-manager",
++           "Indicates whether the embedding started a prefetch of the "
++           "default font manager before creating the engine.")
++DEF_SWITCH(VerboseLogging,
++           "verbose-logging",
++           "By default, only errors are logged. This flag enabled logging at "
++           "all severity levels. This is NOT a per shell flag and affect log "
++           "levels for all shells in the process.")
++DEF_SWITCH(RunForever,
++           "run-forever",
++           "In non-interactive mode, keep the shell running after the Dart "
++           "script has completed.")
++DEF_SWITCH(DisableDartAsserts,
++           "disable-dart-asserts",
++           "Dart code runs with assertions enabled when the runtime mode is "
++           "debug. In profile and release product modes, assertions are "
++           "disabled. This flag may be specified if the user wishes to run "
++           "with assertions disabled in the debug product mode (i.e. with JIT "
++           "or DBC).")
++DEF_SWITCH(EnableSerialGC,
++           "enable-serial-gc",
++           "On low power devices with low core counts, running concurrent "
++           "GC tasks on threads can cause them to contend with the UI thread "
++           "which could potentially lead to jank. This option turns off all "
++           "concurrent GC activities")
++DEF_SWITCH(DisallowInsecureConnections,
++           "disallow-insecure-connections",
++           "By default, dart:io allows all socket connections. If this switch "
++           "is set, all insecure connections are rejected.")
++DEF_SWITCH(DomainNetworkPolicy,
++           "domain-network-policy",
++           "JSON encoded network policy per domain. This overrides the "
++           "DisallowInsecureConnections switch. Embedder can specify whether "
++           "to allow or disallow insecure connections at a domain level.")
++DEF_SWITCH(
++    ForceMultithreading,
++    "force-multithreading",
++    "Uses separate threads for the platform, UI, GPU and IO task runners. "
++    "By default, a single thread is used for all task runners. Only available "
++    "in the flutter_tester.")
++DEF_SWITCH(OldGenHeapSize,
++           "old-gen-heap-size",
++           "The size limit in megabytes for the Dart VM old gen heap space.")
++
++DEF_SWITCH(ResourceCacheMaxBytesThreshold,
++           "resource-cache-max-bytes-threshold",
++           "The max bytes threshold of resource cache, or 0 for unlimited.")
++DEF_SWITCH(EnableImpeller,
++           "enable-impeller",
++           "Enable the Impeller renderer on supported platforms. Ignored if "
++           "Impeller is not supported on the platform.")
++DEF_SWITCH(ImpellerBackend,
++           "impeller-backend",
++           "Requests a particular Impeller backend on platforms that support "
++           "multiple backends. (ex `opengles` or `vulkan`)")
++DEF_SWITCH(EnableVulkanValidation,
++           "enable-vulkan-validation",
++           "Enable loading Vulkan validation layers. The layers must be "
++           "available to the application and loadable. On non-Vulkan backends, "
++           "this flag does nothing.")
++DEF_SWITCH(EnableOpenGLGPUTracing,
++           "enable-opengl-gpu-tracing",
++           "Enable tracing of GPU execution time when using the Impeller "
++           "OpenGLES backend.")
++DEF_SWITCH(EnableVulkanGPUTracing,
++           "enable-vulkan-gpu-tracing",
++           "Enable tracing of GPU execution time when using the Impeller "
++           "Vulkan backend.")
++DEF_SWITCH(LeakVM,
++           "leak-vm",
++           "When the last shell shuts down, the shared VM is leaked by default "
++           "(the leak_vm in VM settings is true). To clean up the leak VM, set "
++           "this value to false.")
++DEF_SWITCH(EnableEmbedderAPI,
++           "enable-embedder-api",
++           "Enable the embedder api. Defaults to false. iOS only.")
++DEF_SWITCH(EnablePlatformIsolates,
++           "enable-platform-isolates",
++           "Enable support for isolates that run on the platform thread.")
++DEF_SWITCH(MergedPlatformUIThread,
++           "merged-platform-ui-thread",
++           "Sets whether the ui thread and platform thread should be merged.")
++// This is a legacy flag that has been superseded by merged-platform-ui-thread.
++// TODO(163064): remove this when users have been migrated.
++DEF_SWITCH(DisableMergedPlatformUIThread,
++           "no-enable-merged-platform-ui-thread",
++           "Merge the ui thread and platform thread.")
++DEF_SWITCH(EnableAndroidSurfaceControl,
++           "enable-surface-control",
++           "Enable the SurfaceControl backed swapchain when supported.")
++DEF_SWITCH(EnableFlutterGPU,
++           "enable-flutter-gpu",
++           "Whether Flutter GPU is enabled.")
++DEF_SWITCH(ImpellerLazyShaderMode,
++           "impeller-lazy-shader-mode",
++           "Whether to defer initialization of all required PSOs for the "
++           "Impeller backend. Defaults to false.")
++DEF_SWITCH(ImpellerAntialiasLines,
++           "impeller-antialias-lines",
++           "Experimental flag to test drawing lines with antialiasing.")
++DEF_SWITCHES_END
++
+ void PrintUsage(const std::string& executable_name);
+ 
+ const std::string_view FlagForSwitch(Switch swtch);
+ 
+-Settings SettingsFromCommandLine(
+-    const fml::CommandLine& command_line,
+-    bool require_merged_platform_ui_thread = false);
++Settings SettingsFromCommandLine(const fml::CommandLine& command_line);
+ 
+ }  // namespace flutter
+ 
+diff --git a/engine/src/flutter/shell/common/switches_unittests.cc b/engine/src/flutter/shell/common/switches_unittests.cc
+index 8042c3a59bb..d71cb08ac9c 100644
+--- a/engine/src/flutter/shell/common/switches_unittests.cc
++++ b/engine/src/flutter/shell/common/switches_unittests.cc
+@@ -149,20 +149,6 @@ TEST(SwitchesTest, EnableAsserts) {
+ }
+ #endif
+ 
+-#ifndef OS_FUCHSIA
+-TEST(SwitchesTest, RequireMergedPlatformUIThread) {
+-  fml::CommandLine command_line = fml::CommandLineFromInitializerList(
+-      {"command", "--merged-platform-ui-thread=disabled"});
+-  Settings settings = SettingsFromCommandLine(command_line);
+-  EXPECT_EQ(settings.merged_platform_ui_thread,
+-            Settings::MergedPlatformUIThread::kDisabled);
+-
+-  EXPECT_DEATH_IF_SUPPORTED(SettingsFromCommandLine(command_line, true),
+-                            "This platform does not support the "
+-                            "merged-platform-ui-thread=disabled flag");
+-}
+-#endif  // !OS_FUCHSIA
+-
+ }  // namespace testing
+ }  // namespace flutter
+ 
+diff --git a/engine/src/flutter/shell/platform/android/flutter_main.cc b/engine/src/flutter/shell/platform/android/flutter_main.cc
+index d14ac400296..da47e89d205 100644
+--- a/engine/src/flutter/shell/platform/android/flutter_main.cc
++++ b/engine/src/flutter/shell/platform/android/flutter_main.cc
+@@ -102,7 +102,7 @@ void FlutterMain::Init(JNIEnv* env,
+   }
+   auto command_line = fml::CommandLineFromIterators(args.begin(), args.end());
+ 
+-  auto settings = SettingsFromCommandLine(command_line, true);
++  auto settings = SettingsFromCommandLine(command_line);
+ 
+   // Turn systracing on if ATrace_isEnabled is true and the user did not already
+   // request systracing
+diff --git a/engine/src/flutter/shell/platform/android/io/flutter/embedding/engine/loader/FlutterLoader.java b/engine/src/flutter/shell/platform/android/io/flutter/embedding/engine/loader/FlutterLoader.java
+index 05b4d1d7b8f..b8f0421b83d 100644
+--- a/engine/src/flutter/shell/platform/android/io/flutter/embedding/engine/loader/FlutterLoader.java
++++ b/engine/src/flutter/shell/platform/android/io/flutter/embedding/engine/loader/FlutterLoader.java
+@@ -430,8 +430,7 @@ public class FlutterLoader {
+           shellArgs.add("--enable-vulkan-gpu-tracing");
+         }
+         if (metaData.getBoolean(DISABLE_MERGED_PLATFORM_UI_THREAD_KEY, false)) {
+-          throw new IllegalArgumentException(
+-              DISABLE_MERGED_PLATFORM_UI_THREAD_KEY + " is no longer allowed.");
++          shellArgs.add("--merged-platform-ui-thread=disabled");
+         }
+         if (metaData.getBoolean(ENABLE_FLUTTER_GPU, false)) {
+           shellArgs.add("--enable-flutter-gpu");
+diff --git a/engine/src/flutter/shell/platform/darwin/ios/framework/Source/FlutterDartProject.mm b/engine/src/flutter/shell/platform/darwin/ios/framework/Source/FlutterDartProject.mm
+index 31a49a856a4..1a2f355a005 100644
+--- a/engine/src/flutter/shell/platform/darwin/ios/framework/Source/FlutterDartProject.mm
++++ b/engine/src/flutter/shell/platform/darwin/ios/framework/Source/FlutterDartProject.mm
+@@ -56,7 +56,7 @@ flutter::Settings FLTDefaultSettingsForBundle(NSBundle* bundle, NSProcessInfo* p
+     bundle = FLTFrameworkBundleWithIdentifier([FlutterDartProject defaultBundleIdentifier]);
+   }
+ 
+-  auto settings = flutter::SettingsFromCommandLine(command_line, true);
++  auto settings = flutter::SettingsFromCommandLine(command_line);
+ 
+   settings.task_observer_add = [](intptr_t key, const fml::closure& callback) {
+     fml::TaskQueueId queue_id = fml::MessageLoop::GetCurrentTaskQueueId();
+@@ -216,8 +216,9 @@ flutter::Settings FLTDefaultSettingsForBundle(NSBundle* bundle, NSProcessInfo* p
+   NSNumber* enableMergedPlatformUIThread =
+       [mainBundle objectForInfoDictionaryKey:@"FLTEnableMergedPlatformUIThread"];
+   if (enableMergedPlatformUIThread != nil) {
+-    FML_CHECK(enableMergedPlatformUIThread.boolValue)
+-        << "FLTEnableMergedPlatformUIThread=false is no longer allowed.";
++    settings.merged_platform_ui_thread = enableMergedPlatformUIThread.boolValue
++                                             ? flutter::Settings::MergedPlatformUIThread::kEnabled
++                                             : flutter::Settings::MergedPlatformUIThread::kDisabled;
+   }
+ 
+   NSNumber* enableFlutterGPU = [mainBundle objectForInfoDictionaryKey:@"FLTEnableFlutterGPU"];

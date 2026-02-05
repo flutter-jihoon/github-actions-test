@@ -1,0 +1,21 @@
+name: 로컬 엔진 빌드
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-local-engine:
+    name: 로컬 엔진 빌드
+    runs-on: macos-latest
+    steps:
+      - name: 리포지토리 체크아웃
+        uses: actions/checkout@v6
+      - name: depot_tools 설치
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
+      - name: MacOS용 의존성 설치
+        if: runner.os == 'macOS'
+        run: brew install curl unzip pkg-config
+      - name: 로컬 엔진 빌드
+        run: sh build-local-engine.sh 3.38.9 stable diff.patch
