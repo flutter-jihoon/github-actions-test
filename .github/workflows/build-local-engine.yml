@@ -3,16 +3,47 @@ name: 로컬 엔진 빌드
 on:
   workflow_dispatch:
 
+env:
+  FLUTTER_VERSION: 3.38.9
+  FLUTTER_CHANNEL: stable
+  CACHE_KEY: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
+  PATCH_FILE: diff.patch
+  FLUTTER_KEY: flutter-sdk-${{ runner.os }}-${{ env.FLUTTER_VERSION }}-${{ runner.arch }}-${{ env.FLUTTER_CHANNEL }}
+  PUB_CACHE_KEY: pub-cache-${{ env.CACHE_KEY }}-${{ runner.os }}-${{ env.FLUTTER_VERSION }}-${{ runner.arch }}-${{ env.FLUTTER_CHANNEL }}
+
 jobs:
   build-local-engine:
     name: 로컬 엔진 빌드
     runs-on: macos-latest
+
     steps:
       - name: 리포지토리 체크아웃
         uses: actions/checkout@v6
+
       - name: depot_tools 설치
         run: |
           git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
           echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
+
       - name: 로컬 엔진 빌드
-        run: sh build-local-engine.sh 3.38.9 stable diff.patch
+        run: sh build-local-engine.sh ${{ env.FLUTTER_VERSION }} ${{ env.FLUTTER_CHANNEL }} ${{ env.PATCH_FILE }}
+
+      - name: Flutter SDK 캐시 구성
+        uses: actions/cache@v5
+        with:
+          path: ${{ runner.tool_cache }}/flutter
+          key: ${{ env.FLUTTER_KEY }}
+
+      - name: pub dependencies 캐시 구성
+        uses: actions/cache@v5
+        with:
+          path: ${{ runner.temp }}/flutter/pub-cache
+          key: ${{ env.PUB_CACHE_KEY }}
+
+      - name: Flutter SDK GitHub Release에 업로드
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.FLUTTER_KEY }}
+          files: ${{ runner.tool_cache }}/flutter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
