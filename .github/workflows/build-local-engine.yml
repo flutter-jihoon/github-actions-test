@@ -6,10 +6,7 @@ on:
 env:
   FLUTTER_VERSION: 3.38.9
   FLUTTER_CHANNEL: stable
-  CACHE_KEY: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
   PATCH_FILE: diff.patch
-  FLUTTER_KEY: flutter-sdk-${{ runner.os }}-${{ env.FLUTTER_VERSION }}-${{ runner.arch }}-${{ env.FLUTTER_CHANNEL }}
-  PUB_CACHE_KEY: pub-cache-${{ env.CACHE_KEY }}-${{ runner.os }}-${{ env.FLUTTER_VERSION }}-${{ runner.arch }}-${{ env.FLUTTER_CHANNEL }}
 
 jobs:
   build-local-engine:
@@ -19,6 +16,17 @@ jobs:
     steps:
       - name: 리포지토리 체크아웃
         uses: actions/checkout@v6
+
+      - name: 환경 변수 설정
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            CACHE_KEY="${{ github.base_ref }}"
+          else
+            CACHE_KEY="${{ github.ref_name }}"
+          fi
+          echo "CACHE_KEY=$CACHE_KEY" >> $GITHUB_ENV
+          echo "FLUTTER_KEY=flutter-sdk-${{ runner.os }}-${{ env.FLUTTER_VERSION }}-${{ runner.arch }}-${{ env.FLUTTER_CHANNEL }}" >> $GITHUB_ENV
+          echo "PUB_CACHE_KEY=pub-cache-${CACHE_KEY}-${{ runner.os }}-${{ env.FLUTTER_VERSION }}-${{ runner.arch }}-${{ env.FLUTTER_CHANNEL }}" >> $GITHUB_ENV
 
       - name: depot_tools 설치
         run: |
