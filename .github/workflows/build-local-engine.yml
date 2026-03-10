@@ -35,23 +35,19 @@ jobs:
 
       - name: 로컬 엔진 빌드
         run: sh build-local-engine.sh ${{ env.FLUTTER_VERSION }} ${{ env.FLUTTER_CHANNEL }} ${{ env.PATCH_FILE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Flutter SDK 캐시 구성
         uses: actions/cache@v5
         with:
           path: ${{ runner.tool_cache }}/flutter
           key: ${{ env.FLUTTER_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: pub dependencies 캐시 구성
         uses: actions/cache@v5
         with:
           path: ${{ runner.temp }}/flutter/pub-cache
           key: ${{ env.PUB_CACHE_KEY }}
-
-      - name: Flutter SDK GitHub Release에 업로드
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ env.FLUTTER_KEY }}
-          files: ${{ runner.tool_cache }}/flutter
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
