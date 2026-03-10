@@ -11,7 +11,7 @@ env:
 jobs:
   build-local-engine:
     name: 로컬 엔진 빌드
-    runs-on: macos-latest
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: 리포지토리 체크아웃
