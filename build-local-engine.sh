@@ -55,7 +55,7 @@ if [ ! -d "${FLUTTER_RUNNER_TOOL_CACHE}" ]; then
 
 	# 설치 파일을 압축 해제합니다.
 	echo -n "Flutter SDK를 압축 해제합니다."
-	if [[ $FLUTTER_OS == linux ]]
+	if [[ $FLUTTER_OS == "linux" ]]
 	then
 		tar -C "${FLUTTER_RUNNER_TOOL_CACHE}" -xf ${FLUTTER_BUILD_ARTIFACT_FILE} >/dev/null
 		EXTRACT_ARCHIVE_CODE=$?
