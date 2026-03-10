@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  FLUTTER_VERSION: 3.38.9
+  FLUTTER_VERSION: 3.41.4
   FLUTTER_CHANNEL: stable
   PATCH_FILE: diff.patch
 
