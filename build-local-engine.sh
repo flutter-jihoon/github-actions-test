@@ -121,6 +121,14 @@ if [ $? -ne 0 ]; then
 fi
 echo "Host Release 엔진 빌드 완료"
 
+echo "GITHUB_REF:      $GITHUB_REF"
+echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
+echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+
+# 현재 gh가 바라보는 repo
+git remote -v
+gh release list --limit 20
+
 # GitHub Releases에 엔진 빌드 결과를 업로드합니다.
 if [[ -n "${GITHUB_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
   echo "GitHub Release(${GITHUB_REF_NAME})에 Host Release 엔진을 업로드합니다..."
@@ -133,13 +141,17 @@ if [[ -n "${GITHUB_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
 
   if [[ -d "${ENGINE_OUT_DIR}" ]]; then
     tar -C "${ENGINE_OUT_DIR}" -cJf "${ENGINE_ARCHIVE}" .
-    GH_TOKEN="${GITHUB_TOKEN}" gh release upload "${GITHUB_REF_NAME}" "${ENGINE_ARCHIVE}" --clobber
-    if [ $? -eq 0 ]; then
-      echo "GitHub Release 업로드 완료: ${ENGINE_ARCHIVE}"
-    else
-      echo "GitHub Release 업로드 실패 (gh release upload)"
-      # 엔진 빌드는 성공했으므로, 여기서는 실패해도 전체 워크플로를 죽이지 않으려면 exit은 하지 않습니다.
+
+    if ! gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+      echo "릴리스(${GITHUB_REF_NAME})가 ${GITHUB_REPOSITORY}에 없습니다. 릴리스 먼저 생성됐는지 확인해주세요."
+      exit 1
     fi
+
+    GH_TOKEN="${GITHUB_TOKEN}" gh release upload \
+    "${GITHUB_REF_NAME}" \
+    "${ENGINE_ARCHIVE}" \
+    --repo "${GITHUB_REPOSITORY}" \
+    --clobber
   else
     echo "경고: ${ENGINE_OUT_DIR} 디렉터리가 없어 GitHub Release 업로드를 건너뜁니다."
   fi
