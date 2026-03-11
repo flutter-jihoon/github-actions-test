@@ -22,8 +22,8 @@ jobs:
 
       - name: 릴리즈에 어셋 업로드 테스트
         run: |
-          echo "GITHUB_REF:      ${{ github.ref }}"
-          echo "GITHUB_REF_NAME: ${{ github.ref_name }}"
+          echo "GITHUB_REF:        ${{ github.ref }}"
+          echo "GITHUB_REF_NAME:   ${{ github.ref_name }}"
           echo "GITHUB_REPOSITORY: ${{ github.repository }}"
 
           # 현재 gh가 바라보는 repo
@@ -31,11 +31,11 @@ jobs:
           gh release list --limit 20
 
           if ! gh release view "${{ github.ref_name }}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
-            echo "릴리스(${github.ref_name})가 ${github.repository}에 없습니다. 릴리스 먼저 생성됐는지 확인해주세요."
+            echo "릴리스(${{ github.ref_name }})가 ${{ github.repository }}에 없습니다. 릴리스 먼저 생성됐는지 확인해주세요."
             exit 1
           fi
 
-          echo "릴리스(${github.ref_name})가 ${github.repository}에 있습니다."
+          echo "릴리스(${{ github.ref_name }})가 ${{ github.repository }}에 있습니다."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
