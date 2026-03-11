@@ -101,9 +101,7 @@ export NINJA_STATUS=""
 echo "로컬 엔진 빌드를 시작합니다..."
 echo "현재 아키텍처: ${ARCH}"
 
-JOBS=${JOBS:-8}
-
-cd "${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/src/flutter"
+JOBS=${JOBS:-4}
 
 # Runner 아키텍처에 따라 Host 엔진 결정
 if [[ $FLUTTER_ARCH == "arm64" ]]; then
@@ -127,20 +125,23 @@ echo "Host Release 엔진 빌드 완료"
 if [[ -n "${GITHUB_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
   echo "GitHub Release(${GITHUB_REF_NAME})에 Host Release 엔진을 업로드합니다..."
 
-  # 업로드할 아카이브 생성 (예: out/${HOST_RELEASE} 전체를 압축)
+  # out은 engine/src/out 아래에 있음
+  cd "${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/src"
+
   ENGINE_OUT_DIR="out/${HOST_RELEASE}"
   ENGINE_ARCHIVE="${RUNNER_TEMP}/flutter-engine-${HOST_RELEASE}.tar.xz"
 
-  tar -C "${ENGINE_OUT_DIR}" -cJf "${ENGINE_ARCHIVE}" .
-
-  # gh CLI를 이용해 릴리스에 asset 업로드
-  GH_TOKEN="${GITHUB_TOKEN}" gh release upload "${GITHUB_REF_NAME}" "${ENGINE_ARCHIVE}" --clobber
-
-  if [ $? -eq 0 ]; then
-    echo "GitHub Release 업로드 완료: ${ENGINE_ARCHIVE}"
+  if [[ -d "${ENGINE_OUT_DIR}" ]]; then
+    tar -C "${ENGINE_OUT_DIR}" -cJf "${ENGINE_ARCHIVE}" .
+    GH_TOKEN="${GITHUB_TOKEN}" gh release upload "${GITHUB_REF_NAME}" "${ENGINE_ARCHIVE}" --clobber
+    if [ $? -eq 0 ]; then
+      echo "GitHub Release 업로드 완료: ${ENGINE_ARCHIVE}"
+    else
+      echo "GitHub Release 업로드 실패 (gh release upload)"
+      # 엔진 빌드는 성공했으므로, 여기서는 실패해도 전체 워크플로를 죽이지 않으려면 exit은 하지 않습니다.
+    fi
   else
-    echo "GitHub Release 업로드 실패 (gh release upload)"
-    # 엔진 빌드는 성공했으므로, 여기서는 실패해도 전체 워크플로를 죽이지 않으려면 exit은 하지 않습니다.
+    echo "경고: ${ENGINE_OUT_DIR} 디렉터리가 없어 GitHub Release 업로드를 건너뜁니다."
   fi
 else
   echo "GITHUB_TOKEN 또는 GITHUB_REF_NAME이 없어 Release 업로드를 건너뜁니다."
