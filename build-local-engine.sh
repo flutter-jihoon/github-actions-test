@@ -130,7 +130,7 @@ git remote -v
 gh release list --limit 20
 
 # GitHub Releases에 엔진 빌드 결과를 업로드합니다.
-if [[ -n "${GITHUB_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
+if [[ -n "${GH_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
   echo "GitHub Release(${GITHUB_REF_NAME})에 Host Release 엔진을 업로드합니다..."
 
   # out은 engine/src/out 아래에 있음
@@ -147,7 +147,7 @@ if [[ -n "${GITHUB_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
       exit 1
     fi
 
-    GH_TOKEN="${GITHUB_TOKEN}" gh release upload \
+    gh release upload \
     "${GITHUB_REF_NAME}" \
     "${ENGINE_ARCHIVE}" \
     --repo "${GITHUB_REPOSITORY}" \
@@ -156,7 +156,7 @@ if [[ -n "${GITHUB_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
     echo "경고: ${ENGINE_OUT_DIR} 디렉터리가 없어 GitHub Release 업로드를 건너뜁니다."
   fi
 else
-  echo "GITHUB_TOKEN 또는 GITHUB_REF_NAME이 없어 Release 업로드를 건너뜁니다."
+  echo "GH_TOKEN 또는 GITHUB_REF_NAME이 없어 Release 업로드를 건너뜁니다."
 fi
 
 # pub이 사용할 경로를 설정합니다.
