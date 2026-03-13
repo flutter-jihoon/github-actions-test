@@ -105,16 +105,16 @@ JOBS=${JOBS:-4}
 
 # Runner 아키텍처에 따라 Host 엔진 결정
 if [[ $FLUTTER_ARCH == "arm64" ]]; then
-    HOST_RELEASE="host_release_arm64"
-    echo "ARM64 아키텍처 감지: ${HOST_RELEASE} 사용"
+    ANDROID_RELEASE="android_release_arm64"
+    echo "ARM64 아키텍처 감지: ${ANDROID_RELEASE} 사용"
 else
-    HOST_RELEASE="host_release"
-    echo "x64 아키텍처 감지: ${HOST_RELEASE} 사용"
+    ANDROID_RELEASE="android_release_arm64"
+    echo "x64 아키텍처 감지: ${ANDROID_RELEASE} 사용"
 fi
 
 # Host Release 엔진 빌드
 echo "Host Release 엔진을 빌드합니다..."
-et build --config ${HOST_RELEASE} -j ${JOBS}
+et build --config ${ANDROID_RELEASE} -j ${JOBS}
 if [ $? -ne 0 ]; then
     echo "Host Release 엔진 빌드 실패"
     exit 1
@@ -136,8 +136,8 @@ if [[ -n "${GH_TOKEN:-}" ]] && [[ -n "${GITHUB_REF_NAME:-}" ]]; then
   # out은 engine/src/out 아래에 있음
   cd "${FLUTTER_RUNNER_TOOL_CACHE}/flutter/engine/src"
 
-  ENGINE_OUT_DIR="out/${HOST_RELEASE}"
-  ENGINE_ARCHIVE="${RUNNER_TEMP}/flutter-engine-${HOST_RELEASE}.tar.xz"
+  ENGINE_OUT_DIR="out/${ANDROID_RELEASE}"
+  ENGINE_ARCHIVE="${RUNNER_TEMP}/flutter-engine-${ANDROID_RELEASE}.tar.xz"
 
   if [[ -d "${ENGINE_OUT_DIR}" ]]; then
     tar -C "${ENGINE_OUT_DIR}" -cJf "${ENGINE_ARCHIVE}" .
