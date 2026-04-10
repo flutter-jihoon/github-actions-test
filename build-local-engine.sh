@@ -105,10 +105,10 @@ JOBS=${JOBS:-4}
 
 # Runner 아키텍처에 따라 Host 엔진 결정
 if [[ $FLUTTER_ARCH == "arm64" ]]; then
-    ANDROID_RELEASE="android_release_arm64"
+    ANDROID_RELEASE="ci/android_release_arm64"
     echo "ARM64 아키텍처 감지: ${ANDROID_RELEASE} 사용"
 else
-    ANDROID_RELEASE="android_release_arm64"
+    ANDROID_RELEASE="ci/android_release_arm64"
     echo "x64 아키텍처 감지: ${ANDROID_RELEASE} 사용"
 fi
 
